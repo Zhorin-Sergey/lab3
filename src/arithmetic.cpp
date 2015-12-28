@@ -97,3 +97,46 @@ double arithmetic::arithmetic_calculation(string str) {
     throw exception("too many operands");
   return result;
 }
+
+double arithmetic::calculation(string str, double *values, int n) {
+  if (str == "")
+    throw std::exception("Empty expression");
+  stack<double> vrStack;
+  double leftOperand;
+  double rightOperand;
+  map<char, double> value;
+  char buff;
+  int j = 0;
+  for (int i = 0; i < str.length(); i++) {
+    buff = str[i];
+	if (((buff >= 0x41) && (buff <= 0x5A)) || ((buff >= 0x61) && (buff <= 0x7A))) {
+      if (j > n)
+        throw std::exception("Too many values");
+	  if (!value.count(buff)) {
+        value[buff] = values[j];
+        j++;
+      }
+	  vrStack.push(value[buff]);
+      continue;
+    }
+	if (vrStack.isEmpty())
+      throw std::exception("right operand is missing");
+	rightOperand = vrStack.pop();
+	if (vrStack.isEmpty())
+      throw std::exception("left operand is missing");
+	leftOperand = vrStack.pop();
+	switch (buff) {
+      case '+': {
+        vrStack.push(leftOperand + rightOperand);
+        break;
+      }
+	  case '-':{vrStack.push(leftOperand - rightOperand); break; }
+	  case '*':{vrStack.push(leftOperand * rightOperand); break; }
+	  case '/':{vrStack.push(leftOperand / rightOperand); break; }
+    }
+  }
+  double result = vrStack.pop();
+  if (!vrStack.isEmpty())
+    throw std::exception("too many operands");
+  return result;
+}

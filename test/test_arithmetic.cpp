@@ -11,10 +11,18 @@ TEST(arithmetic, can_convert_in_a_postfix_notation) {
 TEST(arithmetic, can_calculate_expresion_in_a_postfix_notation) {
   string str1 = "a+b*c";
   double d2 = 7;
+  double d[3] = { 1, 2, 3 };
   string str2 = arithmetic::arithmetic_notation(str1);
-  cout << "Type: 1, 2, 3" << endl;
-  double d1 = arithmetic::arithmetic_calculation(str2);
+  double d1 = arithmetic::calculation(str2, d, 2);
   EXPECT_EQ(d1, d2);
+}
+
+TEST(arithmetic, can_not_calculate_expresion_with_wrong_arguments) {
+  string str1 = "a+b*c";
+  double d2 = 7;
+  double d[3] = { 1, 2, 3 };
+  string str2 = arithmetic::arithmetic_notation(str1);
+  ASSERT_ANY_THROW(arithmetic::calculation(str2, d, 1));
 }
 
 TEST(arithmetic, throws_when_input_invalid) {
