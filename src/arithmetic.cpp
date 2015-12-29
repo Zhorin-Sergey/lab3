@@ -14,6 +14,20 @@ int prior(char a) {
   }
 }
 
+void Insert(string str, map<char, double> &a) {
+  char curr;
+  for (int i = 0; i < str.length(); i++) {
+    curr = str[i];
+    if (((curr >= 0x41) && (curr <= 0x5A)) || ((curr >= 0x61) && (curr <= 0x7A))) 
+      if (!a.count(curr)) {
+        cout<<" "<<curr<<" = ";
+        cin>>a[curr];
+        cout<<endl;
+      }
+    continue;
+    }
+}
+
 string arithmetic::arithmetic_notation(string str) {
   stack<char> operStack;
   stack<char> vrStack;
@@ -59,84 +73,34 @@ string arithmetic::arithmetic_notation(string str) {
   return result;
 }
 
-double arithmetic::arithmetic_calculation(string str) {
-  if (str == "")
-    throw exception("No data");
-  stack<double> vrStack;
-  char buff;
-  double leftOperand;
-  double rightOperand;
-  map<char, double> values;
-  cout << "Input values: " << endl;
-  for (int i = 0; i < str.length(); i++) {
-    buff = str[i];
-    if (((buff >= 0x41) && (buff <= 0x5A)) || ((buff >= 0x61) && (buff <= 0x7A))) {
-      if (!values.count(buff)) {
-        cout << " " << buff << " = ";
-        cin >> values[buff];
-      }
-      vrStack.push(values[buff]);
-      continue;
-    }
-    if (vrStack.isEmpty())
-      throw exception("right operand is missing");
-    rightOperand = vrStack.pop();
-    if (vrStack.isEmpty())
-      throw exception("left operand is missing");
-    leftOperand = vrStack.pop();
-    switch (buff) {
-      case '+':{vrStack.push(leftOperand + rightOperand); break; }
-      case '-':{vrStack.push(leftOperand - rightOperand); break; }
-      case '*':{vrStack.push(leftOperand * rightOperand); break; }
-      case '/':{vrStack.push(leftOperand / rightOperand); break; }
-      case '=': return rightOperand;
-    }
-  }
-  double result = vrStack.pop();
-  if (!vrStack.isEmpty())
-    throw exception("too many operands");
-  return result;
-}
-
-double arithmetic::calculation(string str, double *values, int n) {
+double arithmetic::calculation(string str,  map<char, double> a) {
   if (str == "")
     throw std::exception("Empty expression");
-  stack<double> vrStack;
+  stack<double> operand;
   double leftOperand;
   double rightOperand;
-  map<char, double> value;
-  char buff;
-  int j = 0;
+  char curr;
   for (int i = 0; i < str.length(); i++) {
-    buff = str[i];
-	if (((buff >= 0x41) && (buff <= 0x5A)) || ((buff >= 0x61) && (buff <= 0x7A))) {
-      if (j > n)
-        throw std::exception("Too many values");
-	  if (!value.count(buff)) {
-        value[buff] = values[j];
-        j++;
-      }
-	  vrStack.push(value[buff]);
+    curr = str[i];
+    if (((curr >= 0x41) && (curr <= 0x5A)) || ((curr >= 0x61) && (curr <= 0x7A))) {
+      operand.push(a[curr]);
       continue;
     }
-	if (vrStack.isEmpty())
-      throw std::exception("right operand is missing");
-	rightOperand = vrStack.pop();
-	if (vrStack.isEmpty())
-      throw std::exception("left operand is missing");
-	leftOperand = vrStack.pop();
-	switch (buff) {
-      case '+': {
-        vrStack.push(leftOperand + rightOperand);
-        break;
-      }
-	  case '-':{vrStack.push(leftOperand - rightOperand); break; }
-	  case '*':{vrStack.push(leftOperand * rightOperand); break; }
-	  case '/':{vrStack.push(leftOperand / rightOperand); break; }
+    if (operand.isEmpty())
+      throw std::exception("does not match the number of operands");
+    rightOperand = operand.pop();
+    if (operand.isEmpty())
+      throw std::exception("does not match the number of operands");
+    leftOperand = operand.pop();
+    switch (curr) {
+      case '+': {operand.push(leftOperand + rightOperand); break;  }
+      case '-':{operand.push(leftOperand - rightOperand); break; }
+      case '*':{operand.push(leftOperand * rightOperand); break; }
+      case '/':{operand.push(leftOperand / rightOperand); break; }
     }
   }
-  double result = vrStack.pop();
-  if (!vrStack.isEmpty())
-    throw std::exception("too many operands");
+  double result = operand.pop();
+  if (!operand.isEmpty())
+    throw std::exception("many operands");
   return result;
 }

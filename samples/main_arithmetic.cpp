@@ -1,28 +1,31 @@
-#include <iostream>
-#include <string>
-
 #include "arithmetic.h"
+#include <string>
+#include <map>
+#include <iostream>
 using namespace std;
 
 int main() {
   cout << "Converting in a postfix notation" << endl;
   cout << "Input infix notation: " << endl;
-  string str;
-  cout << " ";
-  cin >> str;
-  string notation;
+  string expression;
+  string note;
   double result;
+  cout << "   ";
+  cin >> expression;
   try {
-    notation = arithmetic::arithmetic_notation(str);
-    result = arithmetic::arithmetic_calculation(notation);
+    note = arithmetic::arithmetic_notation(expression);
+    cout<<"Input values"<<endl;
+    map<char, double> a;
+    Insert(note, a);
+    result = arithmetic::calculation(note,a);
   }
   catch (...) {
     cout << "Error! Invalide input" << endl;
     return 1;
   }
   cout << endl;
-  cout << "Postfix notation: " << endl;
-  cout << " " << notation << endl;
+  cout << "Postfix note: " << endl;
+  cout << " " << note << endl;
   cout << endl;
   cout << "Result: " << endl;
   cout << " " << result << endl;

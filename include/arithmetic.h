@@ -5,11 +5,10 @@
 #include <map>
 using namespace std;
 
-int prior(char a);
+void Insert(string, map<char, double> &); 
 
 class arithmetic {
   public:
     static string arithmetic_notation(string);
-    static double arithmetic_calculation(string);
-	static double calculation(string str, double *values, int n);
+    static double calculation(string, map<char, double>);;
 };

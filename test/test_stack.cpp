@@ -2,12 +2,12 @@
 #include "stack.h"
 #include "stack.cpp"
 
-TEST(Stack, can_create_stack){
+TEST(Stack, can_create_stack) {
   stack<char> *s;
   ASSERT_NO_THROW(s = new stack<char>());
 }
 
-TEST(Stack, can_create_copied_stack){
+TEST(Stack, can_create_copied_stack) {
   stack<char> s1;
   s1.push(1);
   s1.push(8);
